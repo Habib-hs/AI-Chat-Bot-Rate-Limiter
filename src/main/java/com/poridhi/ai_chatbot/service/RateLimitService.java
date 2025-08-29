@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 public class RateLimitService {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private static final int LIMIT = 3;
     private static final int WINDOW_SECONDS = 60;
 
     public RateLimitService(RedisTemplate<String, String> redisTemplate) {
@@ -18,20 +17,24 @@ public class RateLimitService {
     }
 
     /**
-     * Fixed window rate limit: allows up to LIMIT requests per IP per WINDOW_SECONDS.
+     * Generalized fixed window rate limit: allows up to 'limit' requests per 'windowSeconds' for a given key.
      */
-    public boolean isAllowedByFixedWindow(String clientIp) {
-        String key = "rate_limit:" + clientIp + ":" + getCurrentWindow();
+    public boolean isAllowedByFixedWindow(String key, int limit, int windowSeconds) {
         Long count = redisTemplate.opsForValue().increment(key);
-
+        if (count == null) count = 1L;
         if (count == 1) {
-            redisTemplate.expire(key, WINDOW_SECONDS, TimeUnit.SECONDS);
+            redisTemplate.expire(key, windowSeconds, TimeUnit.SECONDS);
         }
-
-        return count <= LIMIT;
+        return count <= limit;
     }
 
     private long getCurrentWindow() {
         return Instant.now().getEpochSecond() / WINDOW_SECONDS;
+    }
+
+    // Legacy method for guest IPs (default 3/min)
+    public boolean isAllowedByFixedWindow(String clientIp) {
+        String key = "rate_limit:" + clientIp + ":" + getCurrentWindow();
+        return isAllowedByFixedWindow(key, 3, WINDOW_SECONDS);
     }
 }
