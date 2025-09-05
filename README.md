@@ -96,6 +96,17 @@ This project is an AI-powered chatbot API with strict rate limiting per user typ
 }
 ```
 
+## User Table (Default Users)
+| Username | Password | User Type |
+|----------|----------|-----------|
+| user1    | pass1    | free      |
+| user2    | pass2    | free      |
+| user3    | pass3    | free      |
+| user4    | pass4    | premium   |
+| user5    | pass5    | premium   |
+
+> These users are created automatically in the database on first run (see `DatabaseInitConfig.java`).
+
 ## Screenshots
 
 Below are example screenshots for different user flows. Replace these with your actual screenshots as needed.
@@ -140,16 +151,6 @@ Below are example screenshots for different user flows. Replace these with your 
   
   ![Premium Chat Rate Limit Screenshot](images/premium_3.PNG)
 
-## User Table (Default Users)
-| Username | Password | User Type |
-|----------|----------|-----------|
-| user1    | pass1    | free      |
-| user2    | pass2    | free      |
-| user3    | pass3    | free      |
-| user4    | pass4    | premium   |
-| user5    | pass5    | premium   |
-
-> These users are created automatically in the database on first run (see `DatabaseInitConfig.java`).
 
 ## Tech Stack
 - Java 17
