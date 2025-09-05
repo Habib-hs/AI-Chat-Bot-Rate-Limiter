@@ -128,9 +128,10 @@ This project is an AI-powered chatbot API with strict rate limiting per user typ
 | Username | Password | User Type |
 |----------|----------|-----------|
 | user1    | pass1    | free      |
-| user2    | pass2    | premium   |
+| user2    | pass2    | free      |
 | user3    | pass3    | free      |
 | user4    | pass4    | premium   |
+| user5    | pass5    | premium   |
 
 > These users are created automatically in the database on first run (see `DatabaseInitConfig.java`).
 
