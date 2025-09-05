@@ -16,13 +16,13 @@ public class  SimpleRateLimitService {
     // In-memory storage for rate limiting
     private final Map<String, Integer> requestCounts = new ConcurrentHashMap<>();
     private final Map<String, Long> windowStartTimes = new ConcurrentHashMap<>();
-    private static final int WINDOW_DURATION_MS = 2 * 60 * 1000; // 2 minutes
+    private static final int WINDOW_DURATION_MS = 60 * 60 * 1000; // 1 hour
 
     public Map<String, Object> checkAndIncrementRateLimit(String authHeader, String clientIp) {
         // Determine user type and limits
         String userType = "guest";
         String identifier = clientIp;
-        int limit = 3; // Default for guest
+        int limit = 3; // Guest: 3/hour
 
         if (authHeader != null && !authHeader.isEmpty()) {
             try {
@@ -34,12 +34,11 @@ public class  SimpleRateLimitService {
                 identifier = username;
 
                 if ("premium".equalsIgnoreCase(userType)) {
-                    limit = 10; // Premium users: 10 requests per 2 minutes
+                    limit = 50; // Premium: 50/hour
                 } else {
-                    limit = 5; // Free users: 5 requests per 2 minutes
+                    limit = 10; // Free: 10/hour
                 }
             } catch (Exception e) {
-                // Invalid token, treat as guest
                 userType = "guest";
                 identifier = clientIp;
                 limit = 3;
@@ -56,7 +55,7 @@ public class  SimpleRateLimitService {
                 // Reset window
                 windowStartTimes.put(key, currentTime);
                 requestCounts.put(key, 1);
-                logger.info("[SimpleRateLimit] New window started for key: {} | Count: 1 | Limit: {}", key, limit);
+                logger.info("[SimpleRateLimit] New 1 hour window started for key: {} | Count: 1 | Limit: {}", key, limit);
 
                 Map<String, Object> result = new HashMap<>();
                 result.put("allowed", true);
@@ -65,6 +64,7 @@ public class  SimpleRateLimitService {
                 result.put("userType", userType);
                 result.put("identifier", identifier);
                 result.put("limit", limit);
+                result.put("windowType", "1 hour");
                 return result;
             } else {
                 // Increment current window
@@ -75,7 +75,7 @@ public class  SimpleRateLimitService {
                 boolean allowed = currentCount <= limit;
                 int remaining = Math.max(0, limit - currentCount);
 
-                logger.info("[SimpleRateLimit] Incremented key: {} | Count: {} | Limit: {} | Allowed: {}",
+                logger.info("[SimpleRateLimit] Incremented key: {} | Count: {} | Limit: {} | Allowed: {} | Window: 1 hour",
                            key, currentCount, limit, allowed);
 
                 Map<String, Object> result = new HashMap<>();
@@ -85,6 +85,7 @@ public class  SimpleRateLimitService {
                 result.put("userType", userType);
                 result.put("identifier", identifier);
                 result.put("limit", limit);
+                result.put("windowType", "1 hour");
                 return result;
             }
         }
@@ -94,7 +95,7 @@ public class  SimpleRateLimitService {
         // Determine user type and limits
         String userType = "guest";
         String identifier = clientIp;
-        int limit = 3; // Default for guest
+        int limit = 3; // Guest: 3/hour
 
         if (authHeader != null && !authHeader.isEmpty()) {
             try {
@@ -106,9 +107,9 @@ public class  SimpleRateLimitService {
                 identifier = username;
 
                 if ("premium".equalsIgnoreCase(userType)) {
-                    limit = 10;
+                    limit = 50;
                 } else {
-                    limit = 5;
+                    limit = 10;
                 }
             } catch (Exception e) {
                 userType = "guest";
@@ -133,7 +134,7 @@ public class  SimpleRateLimitService {
 
             int remaining = Math.max(0, limit - currentCount);
 
-            logger.info("[SimpleRateLimit] Status check - Key: {} | Used: {} | Remaining: {} | Limit: {}",
+            logger.info("[SimpleRateLimit] Status check - Key: {} | Used: {} | Remaining: {} | Limit: {} | Window: 1 hour",
                        key, currentCount, remaining, limit);
 
             Map<String, Object> result = new HashMap<>();
@@ -142,7 +143,7 @@ public class  SimpleRateLimitService {
             result.put("limit", limit);
             result.put("used", currentCount);
             result.put("remaining", remaining);
-            result.put("windowType", "2 minutes");
+            result.put("windowType", "1 hour");
             return result;
         }
     }

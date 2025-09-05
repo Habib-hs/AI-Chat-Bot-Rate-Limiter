@@ -43,7 +43,7 @@ public class ChatController {
             Map<String, Object> rateLimitResponse = new HashMap<>();
             rateLimitResponse.put("success", false);
 
-            String timeWindow = "2 minutes"; // For testing
+            String timeWindow = "1 hour";
             String errorMsg = "";
             if ("guest".equals(userType)) {
                 errorMsg = "Too many requests. Guest users can make " + limit + " requests per " + timeWindow + ".";
@@ -84,7 +84,7 @@ public class ChatController {
         response.put("userType", rateLimitInfo.get("userType"));
         response.put("limit", rateLimitInfo.get("limit"));
         response.put("remaining", rateLimitInfo.get("remaining"));
-        response.put("windowType", "2 minutes");
+        response.put("windowType", "1 hour");
 
         return ResponseEntity.ok(response);
     }
