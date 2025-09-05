@@ -98,31 +98,47 @@ This project is an AI-powered chatbot API with strict rate limiting per user typ
 
 ## Screenshots
 
-> _Add your screenshots below. Replace the placeholders with actual images when available._
+Below are example screenshots for different user flows. Replace these with your actual screenshots as needed.
 
-- **Guest User - Status Check:**
+- **Guest User - Initial Status Check:**
   
-  ![Guest Status Screenshot](docs/guest-status.png)
-
-- **Login as Free User:**
+  ![Guest Status Screenshot](images/guest_1.PNG)
   
-  ![Free User Login Screenshot](docs/free-login.png)
-
-- **Free User - Status Check:**
+- **Guest User - Chat Attempt (Rate Limit):**
   
-  ![Free Status Screenshot](docs/free-status.png)
-
-- **Login as Premium User:**
+  ![Guest Chat Rate Limit Screenshot](images/guest_2.PNG)
   
-  ![Premium User Login Screenshot](docs/premium-login.png)
+- **Guest User - Status After Limit:**
+  
+  ![Guest Status After Limit Screenshot](images/guest_3.PNG)
+  
+- **Guest User - Status After Rate Limit exceed:**
+  
+  ![Guest Status After Window Reset Screenshot](images/guest_4.PNG)
 
+- **Free User - Login:**
+  
+  ![Free User Login Screenshot](images/free_1.PNG)
+  
+- **Free User - Chat Attempt (Rate Limit):**
+  
+  ![Free Status Screenshot](images/free_2.PNG)
+  
+- **Free User - Status After Limit:**
+  
+  ![Free Chat Rate Limit Screenshot](images/free_3.PNG)
+
+- **Premium User - Login:**
+  
+  ![Premium User Login Screenshot](images/premium_1.PNG)
+  
+- **Premium User - hat Attempt (Rate Limit):**
+  
+  ![Premium Status Screenshot](images/premium_2.PNG)
+  
 - **Premium User - Status Check:**
   
-  ![Premium Status Screenshot](docs/premium-status.png)
-
-- **Status Check Without Login (Guest):**
-  
-  ![Guest Status Again Screenshot](docs/guest-status-again.png)
+  ![Premium Chat Rate Limit Screenshot](images/premium_3.PNG)
 
 ## User Table (Default Users)
 | Username | Password | User Type |
